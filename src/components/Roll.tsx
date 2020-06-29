@@ -33,11 +33,11 @@ const useStyles = makeStyles((theme) => ({
     marginRight: "15px",
   },
   paper: {
-    marginTop: theme.spacing(8),
+    marginTop: theme.spacing(12),
+    marginBottom: theme.spacing(12),
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    marginBottom: "96px",
   },
   title: {
     flexGrow: 1,
@@ -174,7 +174,7 @@ const Roll = () => {
         message={`Working - roll number ${rollsState.rollOrdinalNumber}`}
         action={<CircularProgress />}
       />
-      <AppBar position="static">
+      <AppBar position="fixed">
         <Toolbar>
           <Typography variant="h6" className={classes.title}>
             Humble character generator
