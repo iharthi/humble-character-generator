@@ -1,25 +1,22 @@
 import React from 'react';
 import './App.css';
 import Roll from './components/roll';
-import { Container, CssBaseline, makeStyles } from '@material-ui/core';
+import { createMuiTheme } from '@material-ui/core/styles';
+import { ThemeProvider } from '@material-ui/styles';
+import { green } from '@material-ui/core/colors';
 
-const useStyles = makeStyles((theme) => ({
-  paper: {
-    marginTop: theme.spacing(8),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
+const theme = createMuiTheme({
+  palette: {
+    secondary: green,
   },
-}));
+});
+
 
 const App = () => {
-  const classes = useStyles();
-
   return (
-    <Container component="main" maxWidth="md" className={classes.paper}>
-      <CssBaseline />
+    <ThemeProvider theme={theme}>
       <Roll />
-    </Container>
+    </ThemeProvider>
   );
 }
 

@@ -1,25 +1,32 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { Button, Snackbar, LinearProgress } from '@material-ui/core';
-import { makeStyles, Grid, Radio, RadioGroup, FormControlLabel, FormControl, FormLabel } from '@material-ui/core';
+import {Button, Snackbar, CircularProgress, AppBar, Toolbar, Typography, Container, Paper} from '@material-ui/core';
+import { makeStyles, Radio, RadioGroup, FormControlLabel, FormControl,  Table, TableRow, TableHead, TableBody, TableCell } from '@material-ui/core';
 
 
 const useStyles = makeStyles((theme) => ({
-  progress: {
-    padding: "10px",
-    marginTop: "-10px",
-    borderRadius: "5px",
-    backgroundColor: "#face8d",
-    width: "80%",
-    textAlign: "center",
-  },
+
   progressSnackbar: {
     minWidth: "640px",
   },
   mainGrid: {
     padding: "20px",
   },
+  formTitle: {
+    marginRight: "15px",
+  },
   buttonGroup: {
-    margin: "40px",
+  },
+  paper: {
+    marginTop: theme.spacing(8),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  title: {
+    flexGrow: 1,
+  },
+  radioGroup: {
+    flexDirection: 'row',
   }
 }));
 
@@ -137,38 +144,60 @@ const Roll = () => {
 
   return (
     <>
-      <h1>Humble character generator</h1>
-      <h2>Create yourself a better d20 character without too much manual rolling</h2>
-      <Grid container spacing={1} className={classes.mainGrid}>{rollsState.list.map(c => (
-        <Grid item xs={12} key={c.rollOrdinalNumber}>Roll # {c.rollOrdinalNumber} - {formatCharacter(c.rolledCharacter)} - Total score {comparisonMethod(c.rolledCharacter)}</Grid>
-      ))}</Grid>
       <Snackbar
         open={rolling}
         anchorOrigin={{
-          vertical: 'top',
+          vertical: 'bottom',
           horizontal: 'center',
         }}
-        className={classes.progressSnackbar}
-      >
-          <div className={classes.progress}>
-            <LinearProgress />
-            Working - roll number {rollsState.rollOrdinalNumber}.
-          </div>
-      </Snackbar>
-      <Button variant="contained" onClick={() => setRolling(true)}>Roll better character</Button>
-      <FormControl component="fieldset" className={classes.buttonGroup} >
-        <FormLabel component="legend">Comparison method</FormLabel>
-        <RadioGroup value={comparisonMethod === totalCharacterScoreAbsolute ? "absolute" : "modifier"} onChange={(e) => {
-          if (e.target.value === "modifier") {
-            setComparisonMethod(() =>totalCharacterScoreModifier)
-          } else {
-            setComparisonMethod(() => totalCharacterScoreAbsolute)
-          }
-        }}>
-          <FormControlLabel value="absolute" control={<Radio />} label="Absolute total" />
-          <FormControlLabel value="modifier" control={<Radio />} label="Sum of modifiers" />
-        </RadioGroup>
-      </FormControl>
+        message={`Working - roll number ${rollsState.rollOrdinalNumber}`}
+        action={(<CircularProgress />)}
+      />
+      <AppBar position="static">
+        <Toolbar>
+          <Typography variant="h6" className={classes.title}>
+            Humble character generator
+          </Typography>
+          <Typography variant="body1" className={classes.formTitle}>
+            Total:
+          </Typography>
+          <FormControl component="fieldset" className={classes.buttonGroup} >
+            <RadioGroup className={classes.radioGroup} value={comparisonMethod === totalCharacterScoreAbsolute ? "absolute" : "modifier"} onChange={(e) => {
+              if (e.target.value === "modifier") {
+                setComparisonMethod(() =>totalCharacterScoreModifier)
+              } else {
+                setComparisonMethod(() => totalCharacterScoreAbsolute)
+              }
+            }}>
+              <FormControlLabel value="absolute" control={<Radio />} label="Score" />
+              <FormControlLabel value="modifier" control={<Radio />} label="Modifier" />
+            </RadioGroup>
+          </FormControl>
+          <Button variant="contained" onClick={() => setRolling(true)} color="secondary">Roll better character</Button>
+        </Toolbar>
+      </AppBar>
+      <Container component="main" maxWidth="lg" >
+        <Paper elevation={3} className={classes.paper}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>#</TableCell>
+                <TableCell>Result</TableCell>
+                <TableCell>Total</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {rollsState.list.map(c => (
+                <TableRow key={c.rollOrdinalNumber}>
+                  <TableCell>{c.rollOrdinalNumber}</TableCell>
+                  <TableCell>{formatCharacter(c.rolledCharacter)}</TableCell>
+                  <TableCell>{comparisonMethod(c.rolledCharacter)}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </Paper>
+      </Container>
     </>
   )
 }
