@@ -1,10 +1,26 @@
-import React, { useState, useCallback, useEffect } from 'react';
-import {Button, Snackbar, CircularProgress, AppBar, Toolbar, Typography, Container, Paper} from '@material-ui/core';
-import { makeStyles, Radio, RadioGroup, FormControlLabel, FormControl,  Table, TableRow, TableHead, TableBody, TableCell } from '@material-ui/core';
-
+import React, { useState, useCallback, useEffect } from "react";
+import {
+  Button,
+  Snackbar,
+  CircularProgress,
+  AppBar,
+  Toolbar,
+  Typography,
+  Container,
+  Paper,
+  makeStyles,
+  Radio,
+  RadioGroup,
+  FormControlLabel,
+  FormControl,
+  Table,
+  TableRow,
+  TableHead,
+  TableBody,
+  TableCell,
+} from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
-
   progressSnackbar: {
     minWidth: "640px",
   },
@@ -14,58 +30,51 @@ const useStyles = makeStyles((theme) => ({
   formTitle: {
     marginRight: "15px",
   },
-  buttonGroup: {
-  },
+  buttonGroup: {},
   paper: {
     marginTop: theme.spacing(8),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
   },
   title: {
     flexGrow: 1,
   },
   radioGroup: {
-    flexDirection: 'row',
-  }
+    flexDirection: "row",
+  },
 }));
-
 
 type score = [number, number, number, number];
 
 type character = [score, score, score, score, score, score];
 
 type characterRoll = {
-  rolledCharacter: character,
-  rollOrdinalNumber: number,
-}
+  rolledCharacter: character;
+  rollOrdinalNumber: number;
+};
 
 type rollState = {
-  list: Array<characterRoll>,
-  rollOrdinalNumber: number,
-}
+  list: Array<characterRoll>;
+  rollOrdinalNumber: number;
+};
 
-const d6 = (): number => (
-  Math.floor(Math.random() * 6)+1
-)
+const d6 = (): number => Math.floor(Math.random() * 6) + 1;
 
-const rollScore = (): score => (
-  [0, 0, 0, 0].map(d6).sort() as score
-)
+const rollScore = (): score => [0, 0, 0, 0].map(d6).sort() as score;
 
-const totalScore = (s: score) => (
-  s.slice(1).reduce((accumulator, v) => (accumulator + v))
-)
+const totalScore = (s: score) =>
+  s.slice(1).reduce((accumulator, v) => accumulator + v);
 
-const scoreModifier = (s: score) => (
-  Math.floor((s.slice(1).reduce((accumulator, v) => (accumulator + v)) - 10) / 2)
-)
+const scoreModifier = (s: score) =>
+  Math.floor((s.slice(1).reduce((accumulator, v) => accumulator + v) - 10) / 2);
 
-const formatScore = (s: score) => (
-  `(${s[0]}) ${s.slice(1).join("+")} = ${totalScore(s)}`
-)
+const formatScore = (s: score) =>
+  `(${s[0]}) ${s.slice(1).join("+")} = ${totalScore(s)}`;
 
-const makeSortFunction = <T extends unknown>(convertFunction: (a: T) => number) => {
+const makeSortFunction = <T extends unknown>(
+  convertFunction: (a: T) => number
+) => {
   return (a: T, b: T) => {
     if (convertFunction(a) < convertFunction(b)) {
       return -1;
@@ -74,62 +83,69 @@ const makeSortFunction = <T extends unknown>(convertFunction: (a: T) => number) 
       return 1;
     }
     return 0;
-  }
-}
+  };
+};
 
-const rollCharacter = (): character => (
-  [null, null, null, null, null, null].map(rollScore).sort(makeSortFunction(totalScore)) as character
-)
+const rollCharacter = (): character =>
+  [null, null, null, null, null, null]
+    .map(rollScore)
+    .sort(makeSortFunction(totalScore)) as character;
 
-const totalCharacterScoreAbsolute = (c: character) => (
-  c.map(s => totalScore(s)).reduce((accumulator, v) => (accumulator + v))
-)
+const totalCharacterScoreAbsolute = (c: character) =>
+  c.map((s) => totalScore(s)).reduce((accumulator, v) => accumulator + v);
 
-const totalCharacterScoreModifier = (c: character) => (
-  c.map(s => scoreModifier(s)).reduce((accumulator, v) => (accumulator + v))
-)
+const totalCharacterScoreModifier = (c: character) =>
+  c.map((s) => scoreModifier(s)).reduce((accumulator, v) => accumulator + v);
 
-const formatCharacter = (c: character) => (
-  c.map(s => formatScore(s)).join(", ")
-)
+const formatCharacter = (c: character) =>
+  c.map((s) => formatScore(s)).join(", ");
 
 const Roll = () => {
   const classes = useStyles();
 
   const [rollsState, setRollsState] = useState<rollState>({
-    list: [{
-      rolledCharacter: rollCharacter(),
-      rollOrdinalNumber: 1,
-    }],
+    list: [
+      {
+        rolledCharacter: rollCharacter(),
+        rollOrdinalNumber: 1,
+      },
+    ],
     rollOrdinalNumber: 1,
   });
 
-  const [rolling, setRolling] = useState<boolean>(false)
-  const [comparisonMethod, setComparisonMethod] = useState<(c: character) => number>(() => totalCharacterScoreAbsolute);
+  const [rolling, setRolling] = useState<boolean>(false);
+  const [comparisonMethod, setComparisonMethod] = useState<
+    (c: character) => number
+  >(() => totalCharacterScoreAbsolute);
 
   const rollBetterCharacterOrDoNothing = useCallback(() => {
-      const newCharacter = rollCharacter();
-      const newOrdinalNumber = rollsState.rollOrdinalNumber + 1;
-      if (comparisonMethod(newCharacter) > comparisonMethod(rollsState.list[rollsState.list.length-1].rolledCharacter)) {
-        setRollsState({
-          list: [
-            ...rollsState.list,
-            {
-              rolledCharacter: newCharacter,
-              rollOrdinalNumber: newOrdinalNumber,
-            }
-          ],
-          rollOrdinalNumber: newOrdinalNumber,
-        })
-        return true;
-      } else {
-          setRollsState({
-            ...rollsState,
+    const newCharacter = rollCharacter();
+    const newOrdinalNumber = rollsState.rollOrdinalNumber + 1;
+    if (
+      comparisonMethod(newCharacter) >
+      comparisonMethod(
+        rollsState.list[rollsState.list.length - 1].rolledCharacter
+      )
+    ) {
+      setRollsState({
+        list: [
+          ...rollsState.list,
+          {
+            rolledCharacter: newCharacter,
             rollOrdinalNumber: newOrdinalNumber,
-        })
-        return false;
-      }
-    }, [rollsState, comparisonMethod])
+          },
+        ],
+        rollOrdinalNumber: newOrdinalNumber,
+      });
+      return true;
+    } else {
+      setRollsState({
+        ...rollsState,
+        rollOrdinalNumber: newOrdinalNumber,
+      });
+      return false;
+    }
+  }, [rollsState, comparisonMethod]);
 
   useEffect(() => {
     if (rolling) {
@@ -147,11 +163,11 @@ const Roll = () => {
       <Snackbar
         open={rolling}
         anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'center',
+          vertical: "bottom",
+          horizontal: "center",
         }}
         message={`Working - roll number ${rollsState.rollOrdinalNumber}`}
-        action={(<CircularProgress />)}
+        action={<CircularProgress />}
       />
       <AppBar position="static">
         <Toolbar>
@@ -161,22 +177,44 @@ const Roll = () => {
           <Typography variant="body1" className={classes.formTitle}>
             Total:
           </Typography>
-          <FormControl component="fieldset" className={classes.buttonGroup} >
-            <RadioGroup className={classes.radioGroup} value={comparisonMethod === totalCharacterScoreAbsolute ? "absolute" : "modifier"} onChange={(e) => {
-              if (e.target.value === "modifier") {
-                setComparisonMethod(() =>totalCharacterScoreModifier)
-              } else {
-                setComparisonMethod(() => totalCharacterScoreAbsolute)
+          <FormControl component="fieldset" className={classes.buttonGroup}>
+            <RadioGroup
+              className={classes.radioGroup}
+              value={
+                comparisonMethod === totalCharacterScoreAbsolute
+                  ? "absolute"
+                  : "modifier"
               }
-            }}>
-              <FormControlLabel value="absolute" control={<Radio />} label="Score" />
-              <FormControlLabel value="modifier" control={<Radio />} label="Modifier" />
+              onChange={(e) => {
+                if (e.target.value === "modifier") {
+                  setComparisonMethod(() => totalCharacterScoreModifier);
+                } else {
+                  setComparisonMethod(() => totalCharacterScoreAbsolute);
+                }
+              }}
+            >
+              <FormControlLabel
+                value="absolute"
+                control={<Radio />}
+                label="Score"
+              />
+              <FormControlLabel
+                value="modifier"
+                control={<Radio />}
+                label="Modifier"
+              />
             </RadioGroup>
           </FormControl>
-          <Button variant="contained" onClick={() => setRolling(true)} color="secondary">Roll better character</Button>
+          <Button
+            variant="contained"
+            onClick={() => setRolling(true)}
+            color="secondary"
+          >
+            Roll better character
+          </Button>
         </Toolbar>
       </AppBar>
-      <Container component="main" maxWidth="lg" >
+      <Container component="main" maxWidth="lg">
         <Paper elevation={3} className={classes.paper}>
           <Table>
             <TableHead>
@@ -187,7 +225,7 @@ const Roll = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {rollsState.list.map(c => (
+              {rollsState.list.map((c) => (
                 <TableRow key={c.rollOrdinalNumber}>
                   <TableCell>{c.rollOrdinalNumber}</TableCell>
                   <TableCell>{formatCharacter(c.rolledCharacter)}</TableCell>
@@ -199,7 +237,7 @@ const Roll = () => {
         </Paper>
       </Container>
     </>
-  )
-}
+  );
+};
 
 export default Roll;
