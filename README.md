@@ -1,5 +1,7 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+You can see this project deployed at [https://humble-character.kovalskiy.net/](https://humble-character.kovalskiy.net/)
+
 ## Available Scripts
 
 In the project directory, you can run:
