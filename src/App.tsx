@@ -1,5 +1,4 @@
 import React from "react";
-import "./App.css";
 import Roll from "./components/Roll";
 import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
