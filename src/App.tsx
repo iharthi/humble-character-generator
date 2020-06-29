@@ -45,11 +45,7 @@ const App = () => {
   return (
     <ThemeProvider theme={theme}>
       <Roll />
-      <AppBar
-        className={classes.footerInfo}
-        position="absolute"
-        color="secondary"
-      >
+      <AppBar className={classes.footerInfo} position="fixed" color="secondary">
         <Toolbar>
           <Typography
             variant="body1"

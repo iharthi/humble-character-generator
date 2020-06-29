@@ -29,21 +29,15 @@ type rollState = {
 };
 
 const useStyles = makeStyles((theme) => ({
-  progressSnackbar: {
-    minWidth: "640px",
-  },
-  mainGrid: {
-    padding: "20px",
-  },
   formTitle: {
     marginRight: "15px",
   },
-  buttonGroup: {},
   paper: {
     marginTop: theme.spacing(8),
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
+    marginBottom: "96px",
   },
   title: {
     flexGrow: 1,
@@ -188,7 +182,7 @@ const Roll = () => {
           <Typography variant="body1" className={classes.formTitle}>
             Total:
           </Typography>
-          <FormControl component="fieldset" className={classes.buttonGroup}>
+          <FormControl component="fieldset">
             <RadioGroup
               className={classes.radioGroup}
               value={
