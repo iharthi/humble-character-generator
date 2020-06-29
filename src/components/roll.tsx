@@ -219,7 +219,7 @@ const Roll = () => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>#</TableCell>
+                <TableCell width="64px">#</TableCell>
                 <TableCell>Result</TableCell>
                 <TableCell>Total</TableCell>
               </TableRow>
