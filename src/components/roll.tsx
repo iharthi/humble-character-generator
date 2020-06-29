@@ -209,6 +209,7 @@ const Roll = () => {
             variant="contained"
             onClick={() => setRolling(true)}
             color="secondary"
+            disabled={rolling}
           >
             Roll better character
           </Button>
