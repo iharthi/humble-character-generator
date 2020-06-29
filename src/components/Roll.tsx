@@ -21,7 +21,7 @@ import {
 } from "@material-ui/core";
 
 import { score, character, characterRoll } from "../types/roll";
-import Stat from "./stat";
+import Stat from "./Stat";
 
 type rollState = {
   list: Array<characterRoll>;
