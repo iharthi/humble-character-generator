@@ -20,6 +20,14 @@ import {
   TableCell,
 } from "@material-ui/core";
 
+import { score, character, characterRoll } from "../types/roll";
+import Stat from "./stat";
+
+type rollState = {
+  list: Array<characterRoll>;
+  rollOrdinalNumber: number;
+};
+
 const useStyles = makeStyles((theme) => ({
   progressSnackbar: {
     minWidth: "640px",
@@ -43,21 +51,10 @@ const useStyles = makeStyles((theme) => ({
   radioGroup: {
     flexDirection: "row",
   },
+  characterTotal: {
+    fontSize: "28px",
+  },
 }));
-
-type score = [number, number, number, number];
-
-type character = [score, score, score, score, score, score];
-
-type characterRoll = {
-  rolledCharacter: character;
-  rollOrdinalNumber: number;
-};
-
-type rollState = {
-  list: Array<characterRoll>;
-  rollOrdinalNumber: number;
-};
 
 const d6 = (): number => Math.floor(Math.random() * 6) + 1;
 
@@ -69,8 +66,19 @@ const totalScore = (s: score) =>
 const scoreModifier = (s: score) =>
   Math.floor((s.slice(1).reduce((accumulator, v) => accumulator + v) - 10) / 2);
 
-const formatScore = (s: score) =>
-  `(${s[0]}) ${s.slice(1).join("+")} = ${totalScore(s)}`;
+const describeScore = (s: score, sortOrder: number) => {
+  const modifier = scoreModifier(s);
+  return {
+    total: totalScore(s),
+    usedNumbers: s.slice(1).map((n, idx) => ({ result: n, sortOrder: idx })),
+    unusedNumbers: s
+      .slice(0, 1)
+      .map((n, idx) => ({ result: n, sortOrder: idx })),
+    modifier,
+    modifierString: modifier >= 0 ? `+${modifier}` : `${modifier}`,
+    sortOrder: sortOrder,
+  };
+};
 
 const makeSortFunction = <T extends unknown>(
   convertFunction: (a: T) => number
@@ -97,8 +105,11 @@ const totalCharacterScoreAbsolute = (c: character) =>
 const totalCharacterScoreModifier = (c: character) =>
   c.map((s) => scoreModifier(s)).reduce((accumulator, v) => accumulator + v);
 
-const formatCharacter = (c: character) =>
-  c.map((s) => formatScore(s)).join(", ");
+const describeCharacter = (c: characterRoll) => ({
+  stats: c.rolledCharacter.map((s, index) => describeScore(s, index)),
+  rollOrdinalNumber: c.rollOrdinalNumber,
+  rolledCharacter: c.rolledCharacter,
+});
 
 const Roll = () => {
   const classes = useStyles();
@@ -221,18 +232,30 @@ const Roll = () => {
             <TableHead>
               <TableRow>
                 <TableCell width="64px">#</TableCell>
-                <TableCell>Result</TableCell>
-                <TableCell>Total</TableCell>
+                <TableCell align="center" colSpan={6}>
+                  Result
+                </TableCell>
+                <TableCell width="64px">Total</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {rollsState.list.map((c) => (
-                <TableRow key={c.rollOrdinalNumber}>
-                  <TableCell>{c.rollOrdinalNumber}</TableCell>
-                  <TableCell>{formatCharacter(c.rolledCharacter)}</TableCell>
-                  <TableCell>{comparisonMethod(c.rolledCharacter)}</TableCell>
-                </TableRow>
-              ))}
+              {rollsState.list
+                .map((c) => describeCharacter(c))
+                .map((cd) => (
+                  <TableRow key={cd.rollOrdinalNumber}>
+                    <TableCell>{cd.rollOrdinalNumber}</TableCell>
+                    {cd.stats.map((s) => (
+                      <TableCell key={s.sortOrder} align="center">
+                        <Stat stat={s} />
+                      </TableCell>
+                    ))}
+                    <TableCell>
+                      <Typography className={classes.characterTotal}>
+                        {comparisonMethod(cd.rolledCharacter)}
+                      </Typography>
+                    </TableCell>
+                  </TableRow>
+                ))}
             </TableBody>
           </Table>
         </Paper>
