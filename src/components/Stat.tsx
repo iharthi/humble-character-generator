@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Chip, Typography, makeStyles } from "@material-ui/core";
+import { Chip, Typography, makeStyles, Hidden } from "@material-ui/core";
 
 import { statDescription } from "../types/roll";
 
@@ -12,6 +12,9 @@ const useStyles = makeStyles((theme) => ({
   mainStat: {
     fontSize: "24px",
     marginBottom: "10px",
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "16px",
+    },
   },
 }));
 
@@ -63,7 +66,11 @@ const Stat = ({ stat }: StatProps) => {
         className={classes.mainStat}
         style={{ color: getColorForScore(stat.total) }}
       >
-        {`${stat.total} (${stat.modifierString})`}
+        {stat.total}
+        <Hidden mdUp>
+          <br />
+        </Hidden>{" "}
+        ({stat.modifierString})
       </Typography>
       {stat.unusedNumbers.map((n) => (
         <Chip
@@ -74,13 +81,20 @@ const Stat = ({ stat }: StatProps) => {
           variant="outlined"
         />
       ))}
+      <Hidden mdUp>
+        <br />
+      </Hidden>
       {stat.usedNumbers.map((n) => (
-        <Chip
-          key={n.sortOrder}
-          label={n.result}
-          style={{ backgroundColor: getColorForRoll(n.result) }}
-          size="small"
-        />
+        <React.Fragment key={n.sortOrder}>
+          <Chip
+            label={n.result}
+            style={{ backgroundColor: getColorForRoll(n.result) }}
+            size="small"
+          />
+          <Hidden mdUp>
+            <br />
+          </Hidden>
+        </React.Fragment>
       ))}
     </>
   );

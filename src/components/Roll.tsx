@@ -18,7 +18,9 @@ import {
   TableHead,
   TableBody,
   TableCell,
+  Hidden,
 } from "@material-ui/core";
+import withWidth, { isWidthDown } from "@material-ui/core/withWidth";
 
 import { score, character, characterRoll } from "../types/roll";
 import Stat from "./Stat";
@@ -29,6 +31,30 @@ type rollState = {
 };
 
 const useStyles = makeStyles((theme) => ({
+  toolBar: {
+    [theme.breakpoints.down("sm")]: {
+      flexDirection: "column",
+      paddingBottom: theme.spacing(2),
+    },
+  },
+  cell: {
+    [theme.breakpoints.down("sm")]: {
+      paddingLeft: 0,
+      paddingRight: 0,
+    },
+  },
+  cellHeaderNumber: {
+    width: "64px",
+    [theme.breakpoints.down("sm")]: {
+      width: "16px",
+    },
+  },
+  cellHeaderTotal: {
+    width: "64px",
+    [theme.breakpoints.down("sm")]: {
+      width: "48px",
+    },
+  },
   formTitle: {
     marginRight: "15px",
   },
@@ -38,12 +64,16 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
+    [theme.breakpoints.down("sm")]: {
+      marginTop: theme.spacing(4),
+    },
   },
   title: {
     flexGrow: 1,
   },
   radioGroup: {
     flexDirection: "row",
+    alignItems: "center",
   },
   characterTotal: {
     fontSize: "28px",
@@ -105,7 +135,13 @@ const describeCharacter = (c: characterRoll) => ({
   rolledCharacter: c.rolledCharacter,
 });
 
-const Roll = () => {
+type breakpointValue = "xs" | "sm" | "md" | "lg" | "xl";
+
+type rollProps = {
+  width: breakpointValue;
+};
+
+const Roll = ({ width }: rollProps) => {
   const classes = useStyles();
 
   const [rollsState, setRollsState] = useState<rollState>({
@@ -174,14 +210,13 @@ const Roll = () => {
         message={`Working - roll number ${rollsState.rollOrdinalNumber}`}
         action={<CircularProgress />}
       />
-      <AppBar position="fixed">
-        <Toolbar>
-          <Typography variant="h6" className={classes.title}>
-            Humble character generator
-          </Typography>
-          <Typography variant="body1" className={classes.formTitle}>
-            Total:
-          </Typography>
+      <AppBar position={isWidthDown("sm", width) ? "static" : "fixed"}>
+        <Toolbar className={classes.toolBar}>
+          <Hidden smDown>
+            <Typography variant="h6" className={classes.title}>
+              Humble character generator
+            </Typography>
+          </Hidden>
           <FormControl component="fieldset">
             <RadioGroup
               className={classes.radioGroup}
@@ -198,6 +233,9 @@ const Roll = () => {
                 }
               }}
             >
+              <Typography variant="body1" className={classes.formTitle}>
+                Total:
+              </Typography>
               <FormControlLabel
                 value="absolute"
                 control={<Radio />}
@@ -225,11 +263,11 @@ const Roll = () => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell width="64px">#</TableCell>
-                <TableCell align="center" colSpan={6}>
+                <TableCell className={classes.cellHeaderNumber}>#</TableCell>
+                <TableCell className={classes.cell} align="center" colSpan={6}>
                   Result
                 </TableCell>
-                <TableCell width="64px">Total</TableCell>
+                <TableCell className={classes.cellHeaderTotal}>Total</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -239,7 +277,11 @@ const Roll = () => {
                   <TableRow key={cd.rollOrdinalNumber}>
                     <TableCell>{cd.rollOrdinalNumber}</TableCell>
                     {cd.stats.map((s) => (
-                      <TableCell key={s.sortOrder} align="center">
+                      <TableCell
+                        key={s.sortOrder}
+                        align="center"
+                        className={classes.cell}
+                      >
                         <Stat stat={s} />
                       </TableCell>
                     ))}
@@ -258,4 +300,4 @@ const Roll = () => {
   );
 };
 
-export default Roll;
+export default withWidth()(Roll);

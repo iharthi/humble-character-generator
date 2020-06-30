@@ -9,6 +9,7 @@ import {
   Typography,
   Toolbar,
   Link,
+  Hidden,
 } from "@material-ui/core";
 import { ReactComponent as Github } from "./github.svg";
 
@@ -45,26 +46,32 @@ const App = () => {
   return (
     <ThemeProvider theme={theme}>
       <Roll />
-      <AppBar className={classes.footerInfo} position="fixed" color="secondary">
-        <Toolbar>
-          <Typography
-            variant="body1"
-            title="Intended use: to amuse your DM if they argue that rolling as many times as you want is fine."
-            className={classes.footerTitle}
-          >
-            All rolls are executed by finely trained random number generator.
-          </Typography>
-          <Link
-            href="https://github.com/iharthi/humble-character-generator"
-            className={classes.footerGithub}
-          >
-            <Typography variant="body1" className={classes.footerGithubText}>
-              HCG is Open Sourcery
+      <Hidden smDown>
+        <AppBar
+          className={classes.footerInfo}
+          position="fixed"
+          color="secondary"
+        >
+          <Toolbar>
+            <Typography
+              variant="body1"
+              title="Intended use: to amuse your DM if they argue that rolling as many times as you want is fine."
+              className={classes.footerTitle}
+            >
+              All rolls are executed by finely trained random number generator.
             </Typography>
-            <Github className={classes.githubIcon} />
-          </Link>
-        </Toolbar>
-      </AppBar>
+            <Link
+              href="https://github.com/iharthi/humble-character-generator"
+              className={classes.footerGithub}
+            >
+              <Typography variant="body1" className={classes.footerGithubText}>
+                HCG is Open Sourcery
+              </Typography>
+              <Github className={classes.githubIcon} />
+            </Link>
+          </Toolbar>
+        </AppBar>
+      </Hidden>
     </ThemeProvider>
   );
 };
