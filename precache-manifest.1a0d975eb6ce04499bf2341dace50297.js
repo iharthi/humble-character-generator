@@ -1,23 +1,23 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "2f0aa08f07c2713de3855e097b437325",
+    "revision": "5b23ddbede508164ee8507d3d6731a77",
     "url": "/humble-character-generator/index.html"
   },
   {
-    "revision": "c6ae66a7be11c388c7b3",
+    "revision": "a83f39b49abcbbb0e9ca",
     "url": "/humble-character-generator/static/css/main.34de6062.chunk.css"
   },
   {
-    "revision": "efdccf646269c8f4235d",
-    "url": "/humble-character-generator/static/js/2.a56f28c4.chunk.js"
+    "revision": "1421fe12a9863ab66615",
+    "url": "/humble-character-generator/static/js/2.38a13aef.chunk.js"
   },
   {
     "revision": "0749163b59fbee32225059cb60c18af6",
-    "url": "/humble-character-generator/static/js/2.a56f28c4.chunk.js.LICENSE.txt"
+    "url": "/humble-character-generator/static/js/2.38a13aef.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "c6ae66a7be11c388c7b3",
-    "url": "/humble-character-generator/static/js/main.eb0534e2.chunk.js"
+    "revision": "a83f39b49abcbbb0e9ca",
+    "url": "/humble-character-generator/static/js/main.e439bd46.chunk.js"
   },
   {
     "revision": "8f6d910fbd10bbb73dc2",

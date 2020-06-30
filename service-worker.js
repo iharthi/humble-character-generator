@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/humble-character-generator/precache-manifest.c3d2b82d18a16e06d2bfda4f216aa676.js"
+  "/humble-character-generator/precache-manifest.1a0d975eb6ce04499bf2341dace50297.js"
 );
 
 self.addEventListener('message', (event) => {
