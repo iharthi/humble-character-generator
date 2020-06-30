@@ -20,7 +20,6 @@ import {
   TableCell,
   Hidden,
 } from "@material-ui/core";
-import withWidth, { isWidthDown } from "@material-ui/core/withWidth";
 
 import { score, character, characterRoll } from "../types/roll";
 import Stat from "./Stat";
@@ -65,7 +64,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     alignItems: "center",
     [theme.breakpoints.down("sm")]: {
-      marginTop: theme.spacing(4),
+      marginTop: theme.spacing(14),
     },
   },
   title: {
@@ -135,13 +134,7 @@ const describeCharacter = (c: characterRoll) => ({
   rolledCharacter: c.rolledCharacter,
 });
 
-type breakpointValue = "xs" | "sm" | "md" | "lg" | "xl";
-
-type rollProps = {
-  width: breakpointValue;
-};
-
-const Roll = ({ width }: rollProps) => {
+const Roll = () => {
   const classes = useStyles();
 
   const [rollsState, setRollsState] = useState<rollState>({
@@ -210,7 +203,7 @@ const Roll = ({ width }: rollProps) => {
         message={`Working - roll number ${rollsState.rollOrdinalNumber}`}
         action={<CircularProgress />}
       />
-      <AppBar position={isWidthDown("sm", width) ? "static" : "fixed"}>
+      <AppBar position="fixed">
         <Toolbar className={classes.toolBar}>
           <Hidden smDown>
             <Typography variant="h6" className={classes.title}>
@@ -300,4 +293,4 @@ const Roll = ({ width }: rollProps) => {
   );
 };
 
-export default withWidth()(Roll);
+export default Roll;
