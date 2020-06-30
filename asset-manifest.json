@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/humble-character-generator/static/css/main.34de6062.chunk.css",
+    "main.js": "/humble-character-generator/static/js/main.eb0534e2.chunk.js",
+    "main.js.map": "/humble-character-generator/static/js/main.eb0534e2.chunk.js.map",
+    "runtime-main.js": "/humble-character-generator/static/js/runtime-main.abef53bc.js",
+    "runtime-main.js.map": "/humble-character-generator/static/js/runtime-main.abef53bc.js.map",
+    "static/js/2.a56f28c4.chunk.js": "/humble-character-generator/static/js/2.a56f28c4.chunk.js",
+    "static/js/2.a56f28c4.chunk.js.map": "/humble-character-generator/static/js/2.a56f28c4.chunk.js.map",
+    "index.html": "/humble-character-generator/index.html",
+    "precache-manifest.c3d2b82d18a16e06d2bfda4f216aa676.js": "/humble-character-generator/precache-manifest.c3d2b82d18a16e06d2bfda4f216aa676.js",
+    "service-worker.js": "/humble-character-generator/service-worker.js",
+    "static/css/main.34de6062.chunk.css.map": "/humble-character-generator/static/css/main.34de6062.chunk.css.map",
+    "static/js/2.a56f28c4.chunk.js.LICENSE.txt": "/humble-character-generator/static/js/2.a56f28c4.chunk.js.LICENSE.txt",
+    "static/media/github.07883e93.svg": "/humble-character-generator/static/media/github.07883e93.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.abef53bc.js",
+    "static/js/2.a56f28c4.chunk.js",
+    "static/css/main.34de6062.chunk.css",
+    "static/js/main.eb0534e2.chunk.js"
+  ]
+}
