@@ -1,6 +1,6 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-You can see this project deployed at [https://humble-character.kovalskiy.net/](https://humble-character.kovalskiy.net/)
+You can see this project deployed at [http://iharthi.github.io/humble-character-generator](http://iharthi.github.io/humble-character-generator)
 
 ## Available Scripts
 
